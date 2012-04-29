@@ -29,13 +29,13 @@ describe HipChat do
     it "successfully with notifications on as boolean" do
       mock_successful_send 'Dude', 'Hello world', :notify => 1
 
-      room.send("Dude", "Hello world", true).should be_true
+      room.send("Dude", "Hello world", :notify => true).should be_true
     end
     
     it "successfully with notifications off as boolean" do
       mock_successful_send 'Dude', 'Hello world', :notify => 0
 
-      room.send("Dude", "Hello world", false).should be_true
+      room.send("Dude", "Hello world", :notify => false).should be_true
     end
     
     it "successfully with notifications on as option" do
