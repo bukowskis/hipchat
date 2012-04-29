@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rake'
+require 'rspec/core/rake_task'
 
 begin
   require 'jeweler'
@@ -21,7 +22,10 @@ end
 
 task :default => :spec
 
-require 'rake/rdoctask'
+desc "Run specs"
+RSpec::Core::RakeTask.new
+
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
