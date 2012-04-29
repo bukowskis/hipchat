@@ -58,7 +58,7 @@ module HipChat
     #            (default "yellow")
     # +notify+:: true or false
     #            (default false)
-    def send(from, message, options_or_notify = false)
+    def send(from, message, options_or_notify = {:notify => false})
       options = if options_or_notify == true or options_or_notify == false
         warn "DEPRECATED: Specify notify flag as an option (e.g., :notify => true)"
         { :notify => options_or_notify }
