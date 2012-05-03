@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "lib/hipchat/chef.rb",
     "lib/hipchat/rails3_tasks.rb",
     "lib/hipchat/railtie.rb",
+    "lib/hipchat/connection.rb",
     "spec/hipchat_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb"
@@ -42,17 +43,23 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<httparty>, [">= 0"])
+      s.add_runtime_dependency(%q<em-http-request>, ["~> 1.0.2"])
+      s.add_runtime_dependency(%q<faraday>, ["~> 0.8.0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.0"])
-      s.add_development_dependency(%q<rr>, ["~> 1.0"])
+      s.add_development_dependency(%q<webmock>, ["~> 1.8.6"])
     else
       s.add_dependency(%q<httparty>, [">= 0"])
+      s.add_dependency(%q<em-http-request>, ["~> 1.0.2"])
+      s.add_dependency(%q<faraday>, ["~> 0.8.0"])
       s.add_dependency(%q<rspec>, ["~> 2.0"])
-      s.add_dependency(%q<rr>, ["~> 1.0"])
+      s.add_dependency(%q<webmock>, ["~> 1.8.6"])
     end
   else
     s.add_dependency(%q<httparty>, [">= 0"])
+    s.add_dependency(%q<em-http-request>, ["~> 1.0.2"])
+    s.add_dependency(%q<faraday>, ["~> 0.8.0"])
     s.add_dependency(%q<rspec>, ["~> 2.0"])
-    s.add_dependency(%q<rr>, ["~> 1.0"])
+    s.add_dependency(%q<webmock>, ["~> 1.8.6"])
   end
 end
 

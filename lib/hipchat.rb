@@ -1,7 +1,9 @@
-require 'httparty'
 require 'ostruct'
 
 require 'hipchat/railtie' if defined?(Rails::Railtie)
+require 'hipchat/connection'
+require 'em-http'
+require 'json'
 
 module HipChat
   class UnknownRoom         < StandardError; end
@@ -9,33 +11,32 @@ module HipChat
   class UnknownResponseCode < StandardError; end
 
   class Client
-    include HTTParty
 
-    base_uri 'https://api.hipchat.com/v1/rooms'
-    format :json
-
-    def initialize(token)
+    def connection
+      @conn
+    end
+    
+    def initialize(token, options = {})
       @token = token
+      @conn = HipChat::Connection.create options
     end
 
     def rooms
-      @rooms ||= self.class.get("/list", :query => {:auth_token => @token})['rooms'].
-        map { |r| Room.new(@token, r) }
+      response = @conn.get("list", :auth_token => @token)
+      @rooms ||= JSON.parse(response.body)['rooms'].
+        map { |r| Room.new(@conn, @token, r) }
     end
 
     def [](name)
-      Room.new(@token, :room_id => name)
+      Room.new(@conn, @token, :room_id => name)
     end
   end
 
   class Room < OpenStruct
-    include HTTParty
 
-    base_uri 'https://api.hipchat.com/v1/rooms'
-
-    def initialize(token, params)
+    def initialize(conn, token, params)
+      @conn = conn
       @token = token
-
       super(params)
     end
 
@@ -68,26 +69,27 @@ module HipChat
 
       options = { :color => 'yellow', :notify => false }.merge options
 
-      response = self.class.post('/message',
-        :query => { :auth_token => @token },
-        :body  => {
+      response = @conn.post do |request|
+        request.url 'message', :auth_token => @token
+        request.body = {
           :room_id => room_id,
           :from    => from,
           :message => message,
           :color   => options[:color],
           :notify  => options[:notify] ? 1 : 0
         }
-      )
-
-      case response.code
+      end
+      case response.status
       when 200; true
       when 404
         raise UnknownRoom,  "Unknown room: `#{room_id}'"
       when 401
         raise Unauthorized, "Access denied to room `#{room_id}'"
       else
-        raise UnknownResponseCode, "Unexpected #{response.code} for room `#{room_id}'"
+        raise UnknownResponseCode, "Unexpected #{response.status} for room `#{room_id}'"
       end
     end
+
   end
+
 end
