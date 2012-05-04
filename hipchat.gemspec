@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
     "lib/hipchat/railtie.rb",
     "lib/hipchat/connection.rb",
     "spec/hipchat_spec.rb",
-    "spec/spec.opts",
+    ".rspec",
     "spec/spec_helper.rb"
   ]
   s.homepage = "http://github.com/mojotech/hipchat"
