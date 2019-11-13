@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <p>Browsertest</p>
+  </body>
+
+  <script>
+
+    if (navigator.userAgent.match(/Trident.*rv\:11\./)) {
+      document.body.innerHTML += '<p>User agent innehåller ordet "Trident"</p>';
+    } else {
+      document.body.innerHTML += '<p>User agent innehåller inte ordet "Trident"</p>';
+    }
+
+    if (window.navigator.userAgent.indexOf("MSIE ") > 0) {
+      document.body.innerHTML += '<p>User agent innehåller ett MSIE versionsnummer<p>';
+    } else {
+      document.body.innerHTML += '<p>User agent innehåller inget MSIE versionsnummer<p>';
+    }
+
+    if (window.MediaSource) {
+      document.body.innerHTML += '<p>window.MediaSource är tillgänglig<p>';
+    } else {
+      document.body.innerHTML += '<p>Det saknas window.MediaSource<p>';
+    }
+
+    var canvas = document.createElement("canvas")
+
+    var webglCanvasSettings = {
+      preserveDrawingBuffer: !1,
+      alpha: !1,
+      depth: !1,
+      stencil: !1,
+      antialias: !1,
+      premultipliedAlpha: !1
+    }
+
+    if (canvas.getContext("webgl", webglCanvasSettings)) {
+      document.body.innerHTML += '<p>Canvas har webgl<p>';
+    } else {
+      document.body.innerHTML += '<p>Canvas saknar webgl<p>';
+    }
+
+    if (canvas.getContext("experimental-webgl", webglCanvasSettings)) {
+      document.body.innerHTML += '<p>Canvas har experimental-webgl<p>';
+    } else {
+      document.body.innerHTML += '<p>Canvas saknar experimental-webgl<p>';
+    }
+
+    if (window.AudioContext) {
+      document.body.innerHTML += '<p>window.AudioContext är tillgänglig<p>';
+    } else {
+      document.body.innerHTML += '<p>Det saknas window.AudioContext<p>';
+    }
+
+    if (window.webkitAudioContext) {
+      document.body.innerHTML += '<p>window.webkitAudioContext är tillgänglig<p>';
+    } else {
+      document.body.innerHTML += '<p>Det saknas window.webkitAudioContext<p>';
+    }
+
+  </script>
+</html>
